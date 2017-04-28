@@ -1,0 +1,25 @@
+//特定范围数字求和
+function range(start,end,step){
+	var array=[];
+  if(!step){
+    for (var i = start; i < end+1; i=i+1) 
+		array.push(i);
+  } 
+  else if( step>0)
+  {
+    for (var i = start; i < end+1; i=i+step) 
+		array.push(i);
+  }else{
+    for (var i = start; i >end-1; i=i+step) 
+		array.push(i);
+  }
+	return array;
+}
+
+// 答案：if (step == null) step = 1; 属于step>0的情况 而不用多加一个循环
+function sum(a){
+   var total=0
+for(var i=0;i<a.length;i++)
+{total+=a[i];}
+  return total;
+  }
