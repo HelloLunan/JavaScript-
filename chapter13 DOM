@@ -1,0 +1,46 @@
+<!doctype html>
+<h1>Heading <span>with</span> a <span>span</span> element.</h1>
+<p>A paragraph with <span>one</span>, <span>two</span>
+  spans.</p>
+
+<script>
+   //遍历node中的每个子加点，对元素节点，获得其nodeName,
+   // 若与目标tagName匹配，则将此节点保存到事先定义好的数组中
+   //递归调用，遍历每个子节点的子节点
+  function byTagName(node, tagName) {
+    var found = [];
+    tagName = tagName.toUpperCase();
+
+    function explore(node) {
+    
+     //遍历node中的每个子加点，对元素节点，获得其nodeName,
+      for (var i = 0; i < node.childNodes.length; i++) {
+        var child = node.childNodes[i]; 
+        
+        //对元素节点，获得其nodeName,若与目标tagName匹配，则将此节点保存到事先定义好的数组中
+        if (child.nodeType == document.ELEMENT_NODE) {
+          if (child.nodeName == tagName)
+            found.push(child);
+            
+          //递归调用，遍历每个子节点的子节点
+          explore(child);
+        }
+      }
+    }
+
+    explore(node);
+    return found;
+    
+  }
+//测试
+  console.log(byTagName(document.body, "h1").length);
+  // → 1
+  console.log(byTagName(document.body, "span").length);
+  // → 3
+  var para = document.querySelector("p");
+  var hea= document.querySelector("h1");
+  console.log(byTagName(para, "span").length);
+  // → 2
+  for(i=0;i<hea.childNodes.length;i++)
+  {console.log(hea.childNodes[i]);}
+</script>
