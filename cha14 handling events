@@ -1,0 +1,126 @@
+//1.少了QWX的键盘，判定输入字符，阻止keydown的默认行为，使得打不出QWX
+<!doctype html>
+
+<input type="text">
+<script>
+  var field = document.querySelector("input");
+  // Your code here.
+  field.addEventListener("keydown",function(event){
+    if (event.keyCode=="Q".charCodeAt(0)||
+        event.keyCode=="W".charCodeAt(0)||
+        event.keyCode=="X".charCodeAt(0)
+       )
+        event.preventDefault();
+  });
+</script>
+
+//2. 鼠标轨迹我写的，问题在于只有一个点跟随鼠标，轨迹太短。解决方法，创建一个数组，循环使用他们。
+<!doctype html>
+<style>
+  .trail { /* className for the trail elements */
+    position: absolute;
+    height: 6px; width: 6px;
+    border-radius: 3px;
+    background: teal;
+  }
+  body {
+    height: 300px;
+  }
+</style>
+
+<script>
+  // Your code here.
+   var trail=document.createElement("div");
+   trail.className="trail";
+  addEventListener("mousemove",function(event){
+    trail.style.left=(event.clientX)+"px";
+    trail.style.top=(event.clientY)+"px";
+    document.body.appendChild(trail);
+  });
+</script>
+//改进脚本，创建对个轨迹节点放在数组中。mousemove事件触发将数组中元素循环移动到鼠标当前位置。
+<script>
+  // Your code here.
+  dots=[];
+  for(i=0;i++;i<12){
+   var trail=document.createElement("div");
+   trail.className="trail";
+   document.body.appendChild(trail);
+   dots.push(trail);
+  }
+  currentDot=0;
+  addEventListener("mousemove",function(event){
+  
+    dots[currentDot].style.left=(event.clientX-4)+"px";
+    dots[currentDot].style.top=(event.clientY-4)+"px";
+    currentDot=(currentDot+1)%dots.length;
+  });
+</script>
+
+
+
+
+
+//3.用选项卡显示一个节点的子元素
+<!doctype html>
+
+<div id="wrapper">
+  //为这里的每个孩子元素添加按钮，点击按钮相应的孩子元素显示出来
+  <div data-tabname="one">Tab one</div>
+  <div data-tabname="two">Tab two</div>
+  <div data-tabname="three">Tab three</div>
+</div>
+<script>
+  //遍历node的子元素，将所有元素节点保存在数组中
+  function asTabs(node) {
+    var tabs = [];
+    for (var i = 0; i < node.childNodes.length; i++) {
+      var child = node.childNodes[i];
+      if (child.nodeType == document.ELEMENT_NODE)
+        tabs.push(child);
+    }
+    
+    //创建选项卡面板
+    var tabList = document.createElement("div");
+    //对每个孩子元素进行处理
+    tabs.forEach(function(tab, i) {
+      //为每个孩子元素创建一个按钮
+      var button = document.createElement("button");
+      //获取按钮文本
+      button.textContent = tab.getAttribute("data-tabname");
+      //为按钮注册点击事件
+      button.addEventListener("click", function() { selectTab(i); });
+      //将按钮添加到选项卡面板上
+      tabList.appendChild(button);
+    });
+    //将选项卡插入到孩子元素上面
+    node.insertBefore(tabList, node.firstChild);
+   
+    //显示选中的子元素
+    function selectTab(n) {
+    //对每个孩子判断其是否被选中
+      tabs.forEach(function(tab, i) {
+        if (i == n)
+          tab.style.display = "";
+        else
+          tab.style.display = "none";
+      });
+      
+      //为选中的按钮添加样式
+      for (var i = 0; i < tabList.childNodes.length; i++) {
+      //对每个按钮判断是否被选中
+        if (i == n)
+          tabList.childNodes[i].style.background = "violet";
+        else
+          tabList.childNodes[i].style.background = "";
+      }
+    }
+    //默认选中第一个
+    selectTab(0);
+  }
+  asTabs(document.querySelector("#wrapper"));
+</script>
+
+
+
+
